@@ -37,10 +37,24 @@ void TitleScreen::Update()
 		NextScene();
 }
 
-void TitleScreen::CheckInputs(u64 kDown)
+void TitleScreen::CheckInputs(u64 kDown, u64 kHeld)
 {
-	if (kDown & KEY_A || kDown & KEY_TOUCH)
-		m_changeScene = true; // We do it this wait so Update is called
+	// If we touched  play
+	if (kDown & KEY_TOUCH)
+	{
+		u32 i;
+		hidTouchRead(&touch, i);
+		
+		if (touch.px >= 460 && touch.px < 820 && touch.py >= 450 && touch.py <= 576)//360x126
+		{
+			// We touched play ;)
+			m_changeScene = true;
+			return;
+		}
+	}
+
+	if (kDown & KEY_A)
+		m_changeScene = true;
 
 	if (kDown & KEY_PLUS)
 	{

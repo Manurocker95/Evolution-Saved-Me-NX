@@ -7,9 +7,15 @@
 
 class Monkey : public Sprite
 {
-private:
+public:
 	// States of the monkey. In each state, the monkey has a different animation.
-	enum MONKEY_STATES { ALIVE, POWERED, DYING, DEAD };
+	enum MONKEY_STATES 
+	{ 
+		ALIVE, 
+		POWERED, 
+		DYING, 
+		DEAD 
+	};
 
 
 private:

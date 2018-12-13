@@ -12,7 +12,7 @@ public:
 	~TitleScreen();				// Destructor
 	void Start(SDL_Helper * helper) override;				// initialize
 	void Draw() override;				// Draw
-	void CheckInputs(u64 kDown) override;			// CheckInput
+	void CheckInputs(u64 kDown, u64 kHeld) override;			// CheckInput
 	void Update() override;				// Update
 	void NextScene() override;
 private:

@@ -112,7 +112,7 @@ void SplashScreen::NextScene()
 }
 
 // * We check the inputs
-void SplashScreen::CheckInputs(u64 kDown)
+void SplashScreen::CheckInputs(u64 kDown, u64 kHeld)
 {
 	if (kDown & KEY_A || kDown & KEY_TOUCH)
 	{

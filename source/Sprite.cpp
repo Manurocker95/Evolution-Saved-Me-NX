@@ -12,8 +12,11 @@ void Sprite::Draw(SDL_Helper * _helper)
 
 void Sprite::Update()
 {
-	Uint32 ticks = SDL_GetTicks();
-	this->m_currentFrame = (ticks / 100) % this->m_numFrames;
+	if (m_multipleFrames)
+	{
+		Uint32 ticks = SDL_GetTicks();
+		this->m_currentFrame = (ticks / 100) % this->m_numFrames;
+	}
 
 	/*
 	this->m_secondaryCounter++;

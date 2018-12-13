@@ -34,7 +34,7 @@ public:
 
 	void Start(SDL_Helper * helper) override;
 	void Draw() override;
-	void CheckInputs(u64 kDown) override;
+	void CheckInputs(u64 kDown, u64 kHeld) override;
 	void Update() override;
 	void NextScene() override;
 private:

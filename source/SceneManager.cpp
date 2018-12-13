@@ -81,8 +81,10 @@ void SceneManager::CheckInputs()
 	// hidKeysDown returns information about which buttons have been
 	// just pressed in this frame compared to the previous one
 	u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
+	// hidKeysDown returns information about which buttons are being held
+	u64 kHeld = hidKeysHeld(CONTROLLER_P1_AUTO);
 
-	this->m_actualScene->CheckInputs(kDown);
+	this->m_actualScene->CheckInputs(kDown, kHeld);
 }
 
 // We save and exit the program
