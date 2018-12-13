@@ -24,7 +24,7 @@ private:
 
 public:
 	Monkey();	// Basic Constructor
-	Monkey(int _x, int _y, SDL_Helper * _helper, bool _multipleFrames, int _numFrames, int _sizePerFrame);
+	Monkey(int _x, int _y, SDL_Helper * _helper, bool _multipleFrames, int _numFrames, int _sizePerFrameX, int _sizePerFrameY);
 	~Monkey() { };	// Destructor
 
 public:
@@ -37,7 +37,7 @@ public:
 	void SetInvincible(bool value);
 	bool GetInvincible();
 
-	void SetDeadSprite(int _numFrames, int _sizePerFrame);
+	void SetDeadSprite(int _numFrames, int _sizePerFrameX, int _sizePerFrameY);
 	void ChangeState(MONKEY_STATES state);
 
 	bool IsAlive();

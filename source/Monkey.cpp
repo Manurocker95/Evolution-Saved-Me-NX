@@ -16,14 +16,15 @@ Monkey::Monkey()
 	this->m_y = 120;
 	this->m_multipleFrames = false;
 	this->m_numFrames = 1;
-	this->m_sizePerFrame = MONKEY_SIZE_PER_FRAME;
+	this->m_sizePerFrameX = MONKEY_SIZE_PER_FRAME;
+	this->m_sizePerFrameY = MONKEY_SIZE_PER_FRAME;
 	this->m_currentFrame = 0;
 	this->m_secondaryCounter = 0;
 	this->m_invincible = false;
 	this->m_state = ALIVE;
 }
 
-Monkey::Monkey(int _x, int _y, SDL_Helper * _helper, bool _multipleFrames, int _numFrames, int _sizePerFrame)
+Monkey::Monkey(int _x, int _y, SDL_Helper * _helper, bool _multipleFrames, int _numFrames, int _sizePerFrameX, int _sizePerFrameY)
 {
 
 	_helper->SDL_LoadImage(&this->m_normalSprite, IMG_MONKEY_SPRITE);
@@ -36,7 +37,8 @@ Monkey::Monkey(int _x, int _y, SDL_Helper * _helper, bool _multipleFrames, int _
 	this->m_y = _y;
 	this->m_multipleFrames = _multipleFrames;
 	this->m_numFrames = _numFrames;
-	this->m_sizePerFrame = _sizePerFrame;
+	this->m_sizePerFrameY = _sizePerFrameY;
+	this->m_sizePerFrameX = _sizePerFrameX;
 	this->m_currentFrame = 0;
 	this->m_secondaryCounter = 0;
 	this->m_invincible = false;
@@ -64,12 +66,13 @@ void Monkey::ChangeState(MONKEY_STATES _state)
 	}
 }
 
-void Monkey::SetDeadSprite(int _numFrames, int _sizePerFrame)
+void Monkey::SetDeadSprite(int _numFrames, int _sizePerFrameX, int _sizePerFrameY)
 {
 	ChangeState(MONKEY_STATES::DEAD);
 	m_currentFrame = 0;
 	m_numFrames = _numFrames;
-	m_sizePerFrame = _sizePerFrame;
+	m_sizePerFrameX = _sizePerFrameX;
+	m_sizePerFrameY = _sizePerFrameY;
 }
 
 

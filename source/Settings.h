@@ -32,4 +32,16 @@
 
 #define LASER_TIME 180
 #define MIN_LASER_TIME 70
+
+#define MAX_BANANAS 3
+#define MAX_RAYS 32
+
+#define BANANATIMER 150
+#define FIRETIMER 400
+#define POWERUPTIME 250
+
+#define SCORE_TO_ADD 1
+
+#define TIME_TO_SPAWN_RAYS 200
+#define DYINGTIME 200
 #endif

@@ -9,7 +9,6 @@
 
 Ray::Ray()
 {
-
 	this->m_disappear = false;
 	this->m_counter = 0;
 
@@ -17,6 +16,12 @@ Ray::Ray()
 	this->m_color = C_RED;
 	
 	InitialPos();
+}
+
+
+Ray::~Ray()
+{
+
 }
 
 void Ray::InitialPos()
@@ -74,7 +79,7 @@ void Ray::Draw(SDL_Helper * _helper)
 
 void Ray::Update()
 {
-	if (!m_disappear)
+	if (!this->m_disappear)
 	{
 		this->m_counter++;
 
@@ -103,6 +108,11 @@ Ray::RAY_AXIS Ray::GetAxis()
 void Ray::SetAxis(Ray::RAY_AXIS _value)
 {
 	this->m_axis = _value;
+}
+
+void Ray::SetAlphaColor(int _value)
+{
+	this->m_color.a = _value;
 }
 
 SDL_Color Ray::GetColor()

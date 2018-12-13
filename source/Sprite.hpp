@@ -11,7 +11,8 @@ protected:
 	int m_x;
 	int m_y;
 	int m_numFrames;
-	int m_sizePerFrame;
+	int m_sizePerFrameX;
+	int m_sizePerFrameY;
 	int m_currentFrame;
 	int m_secondaryCounter;
 	bool m_multipleFrames;
@@ -37,7 +38,9 @@ public:
 
 	virtual void SetNumFrames(int _value);
 	virtual int GetNumFrames();
-	virtual void SetFrameSize(int _value);
-	virtual int GetFrameSize();
+	virtual void SetFrameSize(int _value, bool _xAxis);
+	virtual int GetFrameSize(bool _xAxis);
+
+	virtual bool Touched(touchPosition _touch);
 };
 #endif

@@ -5,7 +5,7 @@
 void Sprite::Draw(SDL_Helper * _helper)
 {
 	if (this->m_multipleFrames)
-		_helper->SDL_DrawImageRect(this->m_sprite, m_x, m_y, m_currentFrame * m_sizePerFrame, 0, m_sizePerFrame, m_sizePerFrame);
+		_helper->SDL_DrawImageRect(this->m_sprite, m_x, m_y, m_currentFrame * m_sizePerFrameX, 0, m_sizePerFrameX, m_sizePerFrameY);
 	else
 		_helper->SDL_DrawImage(this->m_sprite, m_x, m_y);
 }
@@ -97,12 +97,23 @@ int Sprite::GetNumFrames()
 	return this->m_numFrames;
 }
 
-void Sprite::SetFrameSize(int _value)
+void Sprite::SetFrameSize(int _value, bool _xAxis)
 {
-	this->m_sizePerFrame = _value;
+	if (_xAxis)
+		this->m_sizePerFrameX = _value;
+	else
+		this->m_sizePerFrameY = _value;
 }
 
-int Sprite::GetFrameSize()
+int Sprite::GetFrameSize(bool _xAxis)
 {
-	return this->m_sizePerFrame;
+	if (_xAxis)
+		return this->m_sizePerFrameX;
+	else
+		return this->m_sizePerFrameY;
+}
+
+bool Sprite::Touched(touchPosition _touch)
+{
+	return (_touch.px > this->m_x && _touch.px < this->m_x + this->m_sizePerFrameX) && (_touch.py > this->m_y && _touch.py < this->m_y + m_sizePerFrameY);
 }

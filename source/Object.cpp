@@ -13,19 +13,22 @@ Object::Object()
 	this->m_y = 120;
 	this->m_multipleFrames = false;
 	this->m_numFrames = 1;
-	this->m_sizePerFrame = BANANA_SIZE_PER_FRAME;
+	this->m_sizePerFrameX = BANANA_SIZE_PER_FRAME;
+	this->m_sizePerFrameY = BANANA_SIZE_PER_FRAME;
+
 	this->m_currentFrame = 0;
 	this->m_secondaryCounter = 0;
 }
 
-Object::Object(Object::OBJECT_TYPE _type, SDL_Texture * _sprite, int _x, int _y, int _numFrames, int _sizePerFrame, bool _multipleFrames)
+Object::Object(Object::OBJECT_TYPE _type, SDL_Texture * _sprite, int _x, int _y, int _numFrames, int _sizePerFrameX, int _sizePerFrameY, bool _multipleFrames)
 {
 	this->m_type = _type;
 	this->m_sprite = _sprite;
 	this->m_x = _x;
 	this->m_y = _y;
 	this->m_numFrames = _numFrames;
-	this->m_sizePerFrame = _sizePerFrame;
+	this->m_sizePerFrameX = _sizePerFrameX;
+	this->m_sizePerFrameY = _sizePerFrameY;
 	this->m_multipleFrames = _multipleFrames;
 	this->m_active = false;
 	this->m_secondaryCounter = 0;

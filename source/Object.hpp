@@ -7,10 +7,10 @@
 class Object : public Sprite
 {
 public:
-	enum OBJECT_TYPE 
-	{ 
-		BANANA, 
-		FIRE 
+	enum OBJECT_TYPE
+	{
+		BANANA,
+		FIRE
 	};
 
 private:
@@ -19,15 +19,15 @@ private:
 
 public:
 	Object();
-	Object(OBJECT_TYPE _type, SDL_Texture * _sprite, int  _x, int  _y, int  _numFrames, int  _sizePerFrame, bool  _multipleFrames);
-	
+	Object(OBJECT_TYPE _type, SDL_Texture * _sprite, int  _x, int  _y, int  _numFrames, int  _sizePerFrameX, int _sizePerFrameY, bool  _multipleFrames);
+
 	void Update() override;
-	void End (SDL_Helper * _helper) override;
+	void End(SDL_Helper * _helper) override;
 
 	OBJECT_TYPE GetType();
 	void SetType(OBJECT_TYPE _value);
 
-	bool CheckCollision (Monkey * _player);
+	bool CheckCollision(Monkey * _player);
 	bool IsActive();
 	void SetActive(bool value);
 
