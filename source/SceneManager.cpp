@@ -23,14 +23,15 @@ void SceneManager::Start(SDL_Helper * helper)
 void SceneManager::ReadData()
 {
 	this->m_times_we_have_run_the_program = 1;
-	SetActualScene(SCENES::SPLASH);
+	this->m_actualScene = new SplashScreen();
+	this->m_actualScene->Start(m_helper);
 }
 
 // We set the new scene
 void SceneManager::SetActualScene(SCENES _scene)
 {
 	// We delete the pointer of the actual scene
-	//delete (m_actualScene);
+	delete (m_actualScene);
 
 	// We set the new scene
 	switch (_scene)

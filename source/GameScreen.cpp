@@ -52,9 +52,6 @@ void GameScreen::Start(SDL_Helper * helper)
 	m_ended = false;
 	m_pause = false;
 	m_debugMode = DEBUG_MODE;
-	prevTime = SDL_GetTicks(); // Get ticks
-	m_fps = 0;
-	m_fpsStr = "FPS: 0";
 	m_scoreStr = "Score: " + this->m_score;
 }
 
@@ -103,28 +100,10 @@ void GameScreen::Draw()
 	}
 
 	this->m_helper->SDL_DrawText(600, 670, 4, BLACK, m_scoreStr.c_str());
-
-	if (m_debugMode)
-		this->m_helper->SDL_DrawText(10, 5, 4, BLACK, m_fpsStr.c_str());
 }
 
 void GameScreen::Update()
 {
-	if (m_debugMode)
-	{
-		++m_frames; //increase frames counter
-		u32 currTime = SDL_GetTicks(); //current time since last tick
-		float elapsed = (currTime - prevTime); //elapsed time
-
-		if (elapsed > 100) { //if elapsed time id greater than 100
-
-			m_fps = round(m_frames / (elapsed / 1000.0f)); //round fps
-			m_frames = 0; //reset frames
-			prevTime = currTime; //set previous time to current time
-		}
-
-		m_fpsStr = "FPS: " + (int)m_fps;
-	}
 
 	if (!m_ended && !m_pause)
 	{
@@ -354,5 +333,4 @@ void GameScreen::CheckInputs(u64 kDown, u64 kHeld)
 void GameScreen::NextScene()
 {	
 	SceneManager::Instance()->SetActualScene(SceneManager::TITLE);
-	delete(this);
 }

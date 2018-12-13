@@ -109,7 +109,6 @@ void SplashScreen::NextScene()
 {
 	//
 	SceneManager::Instance()->SetActualScene(SceneManager::TITLE);
-	delete(this);
 }
 
 // * We check the inputs

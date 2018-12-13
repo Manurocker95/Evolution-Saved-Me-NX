@@ -35,7 +35,7 @@ private:
 
 	int m_rayCounter;
 	int m_deltaRay;
-
+	bool m_debugMode;
 	bool m_pause;
 	bool m_ended;
 	std::string m_scoreStr;
