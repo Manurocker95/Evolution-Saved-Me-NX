@@ -37,10 +37,8 @@ private:
 	int m_deltaRay;
 
 	bool m_pause;
-	bool m_debugMode;
-
-	std::string m_fps;
-
+	bool m_ended;
+	std::string m_scoreStr;
 public:
 
 	GameScreen();								// Constructor
@@ -52,6 +50,7 @@ public:
 	void NextScene() override;
 	void UpdateCollisions();
 	void AddScore(int _value);
+	void EndGame();
 };
 
 #endif

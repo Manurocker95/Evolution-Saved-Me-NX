@@ -47,6 +47,9 @@ public:
 	void ChangeState(MONKEY_STATES state);
 
 	bool IsAlive();
+	bool IsDead();
+	bool IsDying();
+	bool IsPowered();
 };
 
 #endif

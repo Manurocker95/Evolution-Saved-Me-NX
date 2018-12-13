@@ -24,6 +24,11 @@ Ray::~Ray()
 
 }
 
+void Ray::End(SDL_Helper * _helper)
+{
+
+}
+
 void Ray::InitialPos()
 {
 	this->m_axis = HORIZONTAL;

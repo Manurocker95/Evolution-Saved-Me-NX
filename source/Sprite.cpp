@@ -85,7 +85,7 @@ int Sprite::GetY()
 
 void Sprite::End(SDL_Helper * _helper)
 {
-	_helper->SDL_DestroyTexture(this->m_sprite);
+	//_helper->SDL_DestroyTexture(this->m_sprite);
 }
 
 
@@ -118,5 +118,5 @@ int Sprite::GetFrameSize(bool _xAxis)
 
 bool Sprite::Touched(touchPosition _touch)
 {
-	return (_touch.px > this->m_x && _touch.px < this->m_x + this->m_sizePerFrameX) && (_touch.py > this->m_y && _touch.py < this->m_y + m_sizePerFrameY);
+	return (_touch.px > this->m_x && _touch.px < this->m_x + this->m_sizePerFrameX) && (_touch.py > this->m_y && _touch.py < this->m_y + this->m_sizePerFrameY);
 }

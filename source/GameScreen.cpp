@@ -3,6 +3,7 @@
 #include "Colors.h"
 #include "Filepaths.h"
 #include "Settings.h"
+#include <cmath>
 
 GameScreen::GameScreen() : Scene()
 {
@@ -11,15 +12,7 @@ GameScreen::GameScreen() : Scene()
 
 GameScreen::~GameScreen()
 {
-	m_helper->SDL_DestroyTexture(m_bananaTexture);
-	m_helper->SDL_DestroyTexture(m_fireTexture);
-	m_player->End(m_helper);
 
-	for (auto & ray : m_rays)
-		delete(ray);
-
-	for (auto & banana : m_bananas)
-		delete(banana);
 }
 
 void GameScreen::Start(SDL_Helper * helper)
@@ -41,26 +34,56 @@ void GameScreen::Start(SDL_Helper * helper)
 	m_helper->SDL_LoadImage(&m_bananaTexture, IMG_BANANA_SPRITE);
 	m_fire = new Object(Object::FIRE, m_fireTexture, -CELL_SIZE, -CELL_SIZE, 4, FIRE_SIZE_PER_FRAME, FIRE_SIZE_PER_FRAME, true);
 
-	m_rays[0]->InitialPos();
-	m_rays[1]->InitialPos();
-	m_rays[2]->InitialPos();
+	for (int i = 0; i < MAX_RAYS; i++)
+	{
+		m_rays[i] = new Ray();
+		m_rays[i]->InitialPos();
+	}
 
 	m_score = 0;
 
-	m_timeToSpawn = TIME_TO_SPAWN_RAYS;
+	m_timeToSpawn = rand() % ((MAX_TIME_TO_SPAWN_RAYS - MIN_TIME_TO_SPAWN_RAYS) + 1) + MIN_TIME_TO_SPAWN_RAYS;
 	m_bananaTimer = 0;
 	m_fireTimer = 0;
 	m_activeBananas = 0;
 	m_rayCounter = 0;
 	m_deltaRay = 0;
 	m_invincibleTimer = 0;
-
+	m_ended = false;
 	m_pause = false;
 	m_debugMode = DEBUG_MODE;
+	prevTime = SDL_GetTicks(); // Get ticks
+	m_fps = 0;
+	m_fpsStr = "FPS: 0";
+	m_scoreStr = "Score: " + this->m_score;
+}
+
+void GameScreen::EndGame()
+{
+	/*
+	m_helper->SDL_DestroyTexture(m_bananaTexture);
+	m_helper->SDL_DestroyTexture(m_fireTexture);
+	*/
+
+	m_player->End(m_helper);
+
+	delete(m_player);
+
+	for (auto & ray : m_rays)
+		delete(ray);
+
+	for (auto & banana : m_bananas)
+		delete(banana);
+
+	m_ended = true;
+	m_changeScene = true;
 }
 
 void GameScreen::Draw()
 {
+	if (m_ended)
+		return;
+
 	m_helper->SDL_DrawImage(m_background, 0, 0);
 
 	for (auto & banana : m_bananas)
@@ -78,11 +101,32 @@ void GameScreen::Draw()
 	{
 		m_helper->SDL_DrawImage(m_pauseTexture, 0, 0);
 	}
+
+	this->m_helper->SDL_DrawText(600, 670, 4, BLACK, m_scoreStr.c_str());
+
+	if (m_debugMode)
+		this->m_helper->SDL_DrawText(10, 5, 4, BLACK, m_fpsStr.c_str());
 }
 
 void GameScreen::Update()
 {
-	if (!m_pause)
+	if (m_debugMode)
+	{
+		++m_frames; //increase frames counter
+		u32 currTime = SDL_GetTicks(); //current time since last tick
+		float elapsed = (currTime - prevTime); //elapsed time
+
+		if (elapsed > 100) { //if elapsed time id greater than 100
+
+			m_fps = round(m_frames / (elapsed / 1000.0f)); //round fps
+			m_frames = 0; //reset frames
+			prevTime = currTime; //set previous time to current time
+		}
+
+		m_fpsStr = "FPS: " + (int)m_fps;
+	}
+
+	if (!m_ended && !m_pause)
 	{
 		m_player->Update();
 
@@ -104,6 +148,7 @@ void GameScreen::Update()
 void GameScreen::AddScore(int _value)
 {
 	m_score += _value;
+	m_scoreStr = "Score: " + this->m_score;
 }
 
 void GameScreen::UpdateCollisions()
@@ -168,6 +213,24 @@ void GameScreen::UpdateCollisions()
 	}
 	else
 	{
+		if (m_player->IsDying())
+		{
+			if (m_dyingTimer >= DYINGTIME)
+			{
+				m_dyingTimer = 0;
+				m_player->SetInvincible(false);
+				m_player->ChangeState(Monkey::MONKEY_STATES::DEAD);
+				m_player->SetFrameSize(MONKEY_SIZE_PER_FRAME, true);
+				EndGame();
+			}
+			else
+			{
+				m_dyingTimer++;
+			}		
+		}
+
+		
+
 		if (m_fireTimer >= FIRETIMER)
 		{
 			m_fireTimer = 0;
@@ -209,87 +272,49 @@ void GameScreen::UpdateCollisions()
 
 	if (m_deltaRay >= m_timeToSpawn)
 	{
-		int numraystospawn = rand() % 3;
-		if (numraystospawn == 0)
+		m_rayCounter = rand() % MAX_RAYS;
+		for (int i = 0; i < m_rayCounter; i++)
 		{
-			m_rays[0]->LoadData();
-			m_rayCounter = 1;
-		}
-		else if (numraystospawn == 1)
+			m_rays[i]->LoadData();
+		}		
+		m_deltaRay = 0;
+		m_timeToSpawn = rand() % ((MAX_TIME_TO_SPAWN_RAYS - MIN_TIME_TO_SPAWN_RAYS) + 1) + MIN_TIME_TO_SPAWN_RAYS;
+	}
+	else if (m_player->IsAlive())
+	{
+		for (int i = 0; i < m_rayCounter; i++)
 		{
-			m_rays[0]->LoadData();
-			m_rays[1]->LoadData();
-			if (m_rays[1]->GetX() == m_rays[0]->GetX())
+			if (m_rays[i]->CheckCollision(m_player))
 			{
-				m_rays[1]->NewPos();
+				m_player->ChangeState(Monkey::MONKEY_STATES::DYING);
+				m_player->SetFrameSize(MONKEY_SIZE_PER_FRAME, true);
+				m_player->SetNumFrames(8);
+				m_rayCounter = 0;
+				m_deltaRay = 0;
 			}
-			m_rayCounter = 2;
 		}
-		else if (numraystospawn == 2)
-		{
-			m_rays[0]->LoadData();
-			m_rays[1]->LoadData();
-			m_rays[2]->LoadData();
-
-			if (m_rays[1]->GetX() == m_rays[0]->GetX() || m_rays[2]->GetX() == m_rays[1]->GetX())
-			{
-				m_rays[1]->NewPos();
-				m_rays[2]->NewPos();
-			}
-
-			if (m_rays[2]->GetX() == m_rays[0]->GetX())
-			{
-				m_rays[0]->NewPos();
-				m_rays[0]->NewPos();
-			}
-
-			m_rayCounter = 3;
-		}
-
-		m_deltaRay = 0;
-	}
-
-	if (m_rays[0]->CheckCollision(m_player))
-	{
-		m_player->ChangeState(Monkey::MONKEY_STATES::DYING);
-		m_player->SetFrameSize(MONKEY_SIZE_PER_FRAME, true);
-		m_player->SetNumFrames(8);
-		m_rayCounter = 0;
-		m_deltaRay = 0;
-	}
-	else if (m_rayCounter > 1 && m_rays[1]->CheckCollision(m_player))
-	{
-		m_player->ChangeState(Monkey::MONKEY_STATES::DYING);
-		m_player->SetFrameSize(MONKEY_SIZE_PER_FRAME, true);
-		m_player->SetNumFrames(8);
-		m_rayCounter = 0;
-		m_deltaRay = 0;
-	}
-	else if (m_rayCounter > 2 && m_rays[2]->CheckCollision(m_player))
-	{
-		m_player->ChangeState(Monkey::MONKEY_STATES::DYING);
-		m_player->SetFrameSize(MONKEY_SIZE_PER_FRAME, true);
-		m_player->SetNumFrames(8);
-		m_rayCounter = 0;
-		m_deltaRay = 0;
 	}
 }
 
+
+
 void GameScreen::CheckInputs(u64 kDown, u64 kHeld)
 {
+	if (m_ended)
+		return;
 
 	if (kDown & KEY_PLUS)
 	{
-		m_changeScene = true;
+		EndGame();
 		return;
 	}
 		
 	if (kDown & KEY_R && kHeld & KEY_L)
-		m_debugMode != m_debugMode;
+		m_debugMode = !m_debugMode;
 
 	if (m_pause)
 	{
-		if (kDown & KEY_TOUCH)
+		if (kDown & KEY_TOUCH || kDown & KEY_MINUS || kDown & KEY_B)
 		{
 			m_pause = false;
 			return;
@@ -297,22 +322,22 @@ void GameScreen::CheckInputs(u64 kDown, u64 kHeld)
 	}
 	else
 	{
-		if (kHeld & KEY_LEFT)
+		if (kDown & KEY_LEFT)
 		{
 			m_player->MoveX(-CELL_SIZE);
 		}
 
-		if (kHeld & KEY_RIGHT)
+		if (kDown & KEY_RIGHT)
 		{
 			m_player->MoveX(CELL_SIZE);
 		}
 
-		if (kHeld & KEY_UP)
+		if (kDown & KEY_UP)
 		{
 			m_player->MoveY(-CELL_SIZE);
 		}
 
-		if (kHeld & KEY_DOWN)
+		if (kDown & KEY_DOWN)
 		{
 			m_player->MoveY(CELL_SIZE);
 		}
@@ -327,7 +352,7 @@ void GameScreen::CheckInputs(u64 kDown, u64 kHeld)
 
 // * We go to the next scene = GameScreen
 void GameScreen::NextScene()
-{
+{	
 	SceneManager::Instance()->SetActualScene(SceneManager::TITLE);
 	delete(this);
 }

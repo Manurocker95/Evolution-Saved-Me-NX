@@ -107,6 +107,7 @@ void SplashScreen::Update()
 // * We go to the next scene = TitleScreen
 void SplashScreen::NextScene()
 {
+	//
 	SceneManager::Instance()->SetActualScene(SceneManager::TITLE);
 	delete(this);
 }

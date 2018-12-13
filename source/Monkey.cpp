@@ -79,11 +79,10 @@ void Monkey::SetDeadSprite(int _numFrames, int _sizePerFrameX, int _sizePerFrame
 void Monkey::End(SDL_Helper * _helper)
 {
 	Sprite::End(_helper);
-	_helper->SDL_DestroyTexture(this->m_deadSprite);
-	_helper->SDL_DestroyTexture(this->m_normalSprite);
-	_helper->SDL_DestroyTexture(this->m_dyingSprite);
-	_helper->SDL_DestroyTexture(this->m_powerUpSprite);
-	delete(this);
+	//_helper->SDL_DestroyTexture(this->m_deadSprite);
+	//_helper->SDL_DestroyTexture(this->m_normalSprite);
+	//_helper->SDL_DestroyTexture(this->m_dyingSprite);
+	//_helper->SDL_DestroyTexture(this->m_powerUpSprite);
 }
 
 Monkey::MONKEY_STATES Monkey::GetState()
@@ -109,4 +108,19 @@ bool Monkey::GetInvincible()
 bool Monkey::IsAlive()
 {
 	return this->m_state == Monkey::ALIVE;
+}
+
+bool Monkey::IsDead()
+{
+	return this->m_state == Monkey::DEAD;
+}
+
+bool Monkey::IsDying()
+{
+	return this->m_state == Monkey::DYING;
+}
+
+bool Monkey::IsPowered()
+{
+	return this->m_state == Monkey::POWERED;
 }

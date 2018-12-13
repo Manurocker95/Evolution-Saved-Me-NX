@@ -28,13 +28,13 @@
 #define FRAME_COUNTER_FIRE 9
 #define FRAME_COUNTER_MONKEY 9
 
-#define CELL_SIZE 40
+#define CELL_SIZE 100
 
 #define LASER_TIME 180
 #define MIN_LASER_TIME 70
 
 #define MAX_BANANAS 3
-#define MAX_RAYS 32
+#define MAX_RAYS 3
 
 #define BANANATIMER 150
 #define FIRETIMER 400
@@ -42,6 +42,8 @@
 
 #define SCORE_TO_ADD 1
 
-#define TIME_TO_SPAWN_RAYS 200
+#define MIN_TIME_TO_SPAWN_RAYS 500
+#define MAX_TIME_TO_SPAWN_RAYS 1000
+
 #define DYINGTIME 200
 #endif
