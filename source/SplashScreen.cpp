@@ -107,14 +107,14 @@ void SplashScreen::Update()
 // * We go to the next scene = TitleScreen
 void SplashScreen::NextScene()
 {
-	SceneManager::Instance()->setActualScene(SceneManager::TITLE);
+	SceneManager::Instance()->SetActualScene(SceneManager::TITLE);
 	delete(this);
 }
 
 // * We check the inputs
 void SplashScreen::CheckInputs(u64 kDown)
 {
-	if (kDown & KEY_A)
+	if (kDown & KEY_A || kDown & KEY_TOUCH)
 	{
 		this->m_changeScene = true;
 	}

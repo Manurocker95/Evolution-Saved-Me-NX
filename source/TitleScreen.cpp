@@ -39,14 +39,19 @@ void TitleScreen::Update()
 
 void TitleScreen::CheckInputs(u64 kDown)
 {
-	if (kDown & KEY_A)
+	if (kDown & KEY_A || kDown & KEY_TOUCH)
 		m_changeScene = true; // We do it this wait so Update is called
+
+	if (kDown & KEY_PLUS)
+	{
+		SceneManager::Instance()->ExitGame();
+	}
 }
 
 // * We go to the next scene = GameScreen
 void TitleScreen::NextScene()
 {
-	SceneManager::Instance()->setActualScene(SceneManager::GAME);
+	SceneManager::Instance()->SetActualScene(SceneManager::GAME);
 	delete(this);
 }
 

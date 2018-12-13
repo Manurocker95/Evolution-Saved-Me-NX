@@ -15,9 +15,10 @@ public:
 
 	enum SCENES { SPLASH, TITLE, GAME };	// Scenes: Splashcreen, TitleScreen, Gamescreen
 
+public:
 	static SceneManager * Instance();		// Property to get the singleton instance
 
-	void setActualScene(SCENES _scene);		// Method to set a new scene (E.G: SplashScreen -> GameScreen)
+	void SetActualScene(SCENES _scene);		// Method to set a new scene (E.G: SplashScreen -> GameScreen)
 	void Start(SDL_Helper * helper);		// Method for initialization
 	void Update();							// Method called every frame. It calls to scene Draw, Update and CheckInput functions
 	void Draw();							// Method called every frame. It calls to scene Draw, Update and CheckInput functions
@@ -27,6 +28,7 @@ public:
 	void ReadData();						// Method for reading data from our save
 	void SaveDataAndExit();					// Method that saves our data to the .sav and exits
 	void Exit();
+	SDL_Helper * GetHelper();
 private:
 
 	SceneManager() {};						// Private so that it can  not be called

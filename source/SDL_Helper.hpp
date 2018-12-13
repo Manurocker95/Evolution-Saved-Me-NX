@@ -1,5 +1,6 @@
 #pragma once
-
+#ifndef _SDL_HELPER_HPP_
+#define _SDL_HELPER_HPP_
 #include <switch.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h> 
@@ -34,9 +35,12 @@ public:
 	void SDL_DrawImageOpacity(SDL_Texture *texture, int x, int y, int alpha);
 	void SDL_DrawImageScaleOpacity(SDL_Texture *texture, int x, int y, int w, int h, int alpha);
 	void SDL_DrawImage(SDL_Texture *texture, int x, int y);
+	void SDL_DrawImageRect(SDL_Texture * texture, int x, int y, int tex_x, int tex_y, int tex_w, int tex_h);
+	void SDL_DrawImageRectOpacity(SDL_Texture * texture, int x, int y, int tex_x, int tex_y, int tex_w, int tex_h, int opacity);
 	void SDL_DrawImageScale(SDL_Texture *texture, int x, int y, int w, int h);
 	void SDL_Renderdisplay(void);
 	void SDL_DestroyTexture(SDL_Texture * texture);
 	void SDL_DrawBG(SDL_Color clearColor, SDL_Color colour);
 	bool SDL_IsInitialized(void);
 };
+#endif

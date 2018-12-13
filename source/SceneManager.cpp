@@ -23,11 +23,11 @@ void SceneManager::Start(SDL_Helper * helper)
 void SceneManager::ReadData()
 {
 	this->m_times_we_have_run_the_program = 1;
-	setActualScene(SCENES::SPLASH);
+	SetActualScene(SCENES::SPLASH);
 }
 
 // We set the new scene
-void SceneManager::setActualScene(SCENES _scene)
+void SceneManager::SetActualScene(SCENES _scene)
 {
 	// We delete the pointer of the actual scene
 	//delete (m_actualScene);
@@ -82,12 +82,6 @@ void SceneManager::CheckInputs()
 	// just pressed in this frame compared to the previous one
 	u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
 
-	if (kDown & KEY_PLUS)
-	{
-		this->m_out = true;
-		return;
-	}
-
 	this->m_actualScene->CheckInputs(kDown);
 }
 
@@ -104,3 +98,7 @@ void SceneManager::Exit()
 	delete(this);
 }
 
+SDL_Helper * SceneManager::GetHelper()
+{
+	return this->m_helper;
+}

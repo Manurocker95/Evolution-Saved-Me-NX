@@ -42,6 +42,6 @@ void GameScreen::CheckInputs(u64 kDown)
 // * We go to the next scene = GameScreen
 void GameScreen::NextScene()
 {
-	SceneManager::Instance()->setActualScene(SceneManager::TITLE);
+	SceneManager::Instance()->SetActualScene(SceneManager::TITLE);
 	delete(this);
 }

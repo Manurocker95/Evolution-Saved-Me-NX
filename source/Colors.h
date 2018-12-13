@@ -2,6 +2,7 @@
 #include "SDL_FontCache.h"
 
 #define WHITE                 FC_MakeColor(255, 255, 255, 255)
+#define C_RED                 FC_MakeColor(255, 0, 0, 128)
 #define BLACK_BG              FC_MakeColor(48, 48, 48, 255)
 #define STATUS_BAR_LIGHT      FC_MakeColor(37, 79, 174, 255)
 #define STATUS_BAR_DARK       FC_MakeColor(38, 50, 56, 255)

@@ -1,5 +1,7 @@
 #include "SDL_Helper.hpp"
 #include <iostream>
+#include "Settings.h"
+#include "Colors.h"
 
 SDL_Helper::SDL_Helper()
 {
@@ -40,7 +42,7 @@ Result SDL_Helper::SDL_HelperInit(void)
 	Result ret = 0;
 
 	SDL_Init(SDL_INIT_EVERYTHING);
-	this->m_window = SDL_CreateWindow("Homebrew-Template", 0, 0, 1280, 720, SDL_WINDOW_FULLSCREEN);
+	this->m_window = SDL_CreateWindow(PROJECT_NAME, 0, 0, SWITCH_SCREEN_WIDTH, SWITCH_SCREEN_HEIGHT, SDL_WINDOW_FULLSCREEN);
 	this->m_renderer = SDL_CreateRenderer(this->m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	SDL_SetRenderDrawBlendMode(this->m_renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
@@ -159,6 +161,19 @@ void SDL_Helper::SDL_DrawImage(SDL_Texture *texture, int x, int y)
 	SDL_RenderCopy(this->m_renderer, texture, NULL, &position);
 }
 
+void SDL_Helper::SDL_DrawImageRect(SDL_Texture * texture, int x, int y, int tex_x, int tex_y, int tex_w, int tex_h)
+{
+	SDL_Rect srcrect = { tex_x, tex_y, tex_w, tex_h};
+	SDL_Rect dstrect = { x, y, tex_w, tex_h };
+	SDL_RenderCopy(this->m_renderer, texture, &srcrect, &dstrect);
+}
+
+void SDL_Helper::SDL_DrawImageRectOpacity(SDL_Texture * texture, int x, int y, int tex_x, int tex_y, int tex_w, int tex_h, int opacity)
+{
+	SDL_SetTextureAlphaMod(texture, opacity);
+	SDL_DrawImageRect(texture, x, y, tex_x, tex_y, tex_w, tex_h);
+}
+
 void SDL_Helper::SDL_DrawImageScale(SDL_Texture *texture, int x, int y, int w, int h) 
 {
 	SDL_Rect position;
@@ -174,18 +189,13 @@ void SDL_Helper::SDL_Renderdisplay(void)
 void SDL_Helper::SDL_DrawImageOpacity(SDL_Texture *texture, int x, int y, int opacity)
 {
 	SDL_SetTextureAlphaMod(texture, opacity);
-	SDL_Rect position;
-	position.x = x; position.y = y;
-	SDL_QueryTexture(texture, NULL, NULL, &position.w, &position.h);
-	SDL_RenderCopy(this->m_renderer, texture, NULL, &position);
+	SDL_DrawImage(texture, x, y);
 }
 
 void SDL_Helper::SDL_DrawImageScaleOpacity(SDL_Texture *texture, int x, int y, int w, int h, int opacity)
 {
 	SDL_SetTextureAlphaMod(texture, opacity);
-	SDL_Rect position;
-	position.x = x; position.y = y; position.w = w; position.h = h;
-	SDL_RenderCopy(this->m_renderer, texture, NULL, &position);
+	SDL_DrawImageScale(texture, x, y, w, h);
 }
 
 void SDL_Helper::SDL_DestroyTexture(SDL_Texture * texture)
@@ -196,5 +206,5 @@ void SDL_Helper::SDL_DestroyTexture(SDL_Texture * texture)
 void SDL_Helper::SDL_DrawBG(SDL_Color clearColor, SDL_Color colour)
 {
 	SDL_ClearScreen(clearColor);
-	SDL_DrawRect(0, 0, 1280, 720, colour);
+	SDL_DrawRect(0, 0, SWITCH_SCREEN_WIDTH, SWITCH_SCREEN_HEIGHT, colour);
 }

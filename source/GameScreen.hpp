@@ -8,12 +8,12 @@ class GameScreen : public Scene
 {
 public:
 
-	GameScreen();				// Constructor
-	~GameScreen();				// Destructor
-	void Start(SDL_Helper * helper) override;				// initialize
-	void Draw() override;				// Draw
-	void CheckInputs(u64 kDown) override;			// CheckInput
-	void Update() override;				// Update
+	GameScreen();								// Constructor
+	~GameScreen();								// Destructor
+	void Start(SDL_Helper * helper) override;	// initialize
+	void Draw() override;						// Draw
+	void CheckInputs(u64 kDown) override;		// CheckInput
+	void Update() override;						// Update
 	void NextScene() override;
 private:
 	SDL_Texture * m_background;
