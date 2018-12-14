@@ -45,6 +45,11 @@ Monkey::Monkey(int _x, int _y, SDL_Helper * _helper, bool _multipleFrames, int _
 	this->m_state = ALIVE;
 }
 
+Monkey::~Monkey()
+{
+
+}
+
 void Monkey::ChangeState(MONKEY_STATES _state)
 {
 	this->m_state = _state;
@@ -79,10 +84,10 @@ void Monkey::SetDeadSprite(int _numFrames, int _sizePerFrameX, int _sizePerFrame
 void Monkey::End(SDL_Helper * _helper)
 {
 	Sprite::End(_helper);
-	//_helper->SDL_DestroyTexture(this->m_deadSprite);
-	//_helper->SDL_DestroyTexture(this->m_normalSprite);
-	//_helper->SDL_DestroyTexture(this->m_dyingSprite);
-	//_helper->SDL_DestroyTexture(this->m_powerUpSprite);
+	_helper->SDL_DestroyTexture(this->m_deadSprite);
+	_helper->SDL_DestroyTexture(this->m_normalSprite);
+	_helper->SDL_DestroyTexture(this->m_dyingSprite);
+	_helper->SDL_DestroyTexture(this->m_powerUpSprite);
 }
 
 Monkey::MONKEY_STATES Monkey::GetState()

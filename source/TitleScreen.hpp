@@ -6,6 +6,12 @@
 
 class TitleScreen : public Scene
 {
+private:
+	SDL_Texture * m_background;
+	SDL_Texture * m_logo;
+	SDL_Texture * m_playButton;
+	FC_Font * m_font;
+
 public:
 
 	TitleScreen();				// Constructor
@@ -15,10 +21,7 @@ public:
 	void CheckInputs(u64 kDown, u64 kHeld) override;			// CheckInput
 	void Update() override;				// Update
 	void NextScene() override;
-private:
-	SDL_Texture * m_background;
-	SDL_Texture * m_logo;
-	SDL_Texture * m_playButton;
+
 };
 
 #endif

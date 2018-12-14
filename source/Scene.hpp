@@ -13,6 +13,7 @@ class Scene
 protected:
 	SDL_Helper * m_helper;
 	bool m_changeScene;
+	bool m_changingScene;
 	touchPosition touch;
 
 public:

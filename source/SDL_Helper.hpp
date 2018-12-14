@@ -6,6 +6,7 @@
 #include <SDL2/SDL2_gfxPrimitives.h> 
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 #include "SDL_FontCache.h"
 
 class SDL_Helper
@@ -28,6 +29,8 @@ public:
 	void SDL_DrawRect(int x, int y, int w, int h, SDL_Color colour);
 	void SDL_DrawCircle(int x, int y, int r, SDL_Color colour);
 	void SDL_DrawText(int x, int y, int size, SDL_Color colour, const char *text);
+	void SDL_DrawTextWithFont(FC_Font * font, int x, int y, SDL_Color colour, const char *text);
+	void SDL_LoadCustomFont(FC_Font ** font, char * fontPath, int size, SDL_Color color);
 	void SDL_DrawTextf(int x, int y, int size, SDL_Color colour, const char* text, ...);
 	void SDL_GetTextDimensions(int size, const char *text, u32 *width, u32 *height);
 	void SDL_LoadImage(SDL_Texture **texture, char *path);
@@ -40,6 +43,7 @@ public:
 	void SDL_DrawImageScale(SDL_Texture *texture, int x, int y, int w, int h);
 	void SDL_Renderdisplay(void);
 	void SDL_DestroyTexture(SDL_Texture * texture);
+	void SDL_DestroyFont(FC_Font * font);
 	void SDL_DrawBG(SDL_Color clearColor, SDL_Color colour);
 	bool SDL_IsInitialized(void);
 };

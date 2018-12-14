@@ -25,11 +25,13 @@
 // Backgrounds
 #define IMG_BG_TITLE "romfs:/resources/Art/Background.png"
 #define IMG_BG_GAME "romfs:/resources/Art/GameBackground.png"
-#define IMG_BG_GAMEOVER "romfs:/resources/Art/bgendtop.png"
+#define IMG_BG_GAMEOVER "romfs:/resources/Art/DeadBackground.png"
 #define IMG_BG_PAUSE "romfs:/resources/Art/pauseScreen.png"
 
 //Splash Screen
 #define IMG_SPLASHSCREEN "romfs:/resources/Art/Splash.png"
+
+#define IMG_BG_LOADING "romfs:/resources/Art/Loading.png" 
 
 // Sprites (Monkey, Banan, Fire...)
 #define IMG_MONKEY_SPRITE "romfs:/resources/Art/Monkey.png"
@@ -53,5 +55,6 @@
 #define FONT_PIXEL "romfs:/resources/Font/Pixelated-12.sfn"
 #define FONT_FREESANS "romfs:/resources/Font/FreeSans.ttf"
 #define FONT_BFF "romfs:/resources/Font/fixedsys.bff"
+
 
 #endif

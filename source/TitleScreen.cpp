@@ -6,34 +6,38 @@
 
 TitleScreen::TitleScreen() : Scene()
 {
-
+	this->m_changeScene = false;
 }
 
 TitleScreen::~TitleScreen()
 {
-	//m_helper->
+	m_helper->SDL_DestroyTexture(m_background);
+	m_helper->SDL_DestroyTexture(m_logo);
+	m_helper->SDL_DestroyTexture(m_playButton);
+	m_helper->SDL_DestroyFont(m_font);
 }
 
 void TitleScreen::Start(SDL_Helper * helper)
 {
-	m_changeScene = false;
-	m_helper = helper;
-	m_helper->SDL_LoadImage(&m_background, IMG_BG_TITLE);
-	m_helper->SDL_LoadImage(&m_logo, IMG_LOGO);
-	m_helper->SDL_LoadImage(&m_playButton, IMG_BT_PLAY);
+
+	this->m_helper = helper;
+	this->m_helper->SDL_LoadImage(&this->m_background, IMG_BG_TITLE);
+	this->m_helper->SDL_LoadImage(&this->m_logo, IMG_LOGO);
+	this->m_helper->SDL_LoadImage(&this->m_playButton, IMG_BT_PLAY);
+	this->m_helper->SDL_LoadCustomFont(&this->m_font, FONT_NORMAL, 15, BLACK);
 }
 
 void TitleScreen::Draw()
 {
-	m_helper->SDL_DrawImage(m_background, 0, 0);
-	m_helper->SDL_DrawImage(m_logo, 250, 70);
-	m_helper->SDL_DrawImage(m_playButton, 460, 450);
-	this->m_helper->SDL_DrawText(600, 670, 4, BLACK, "Manurocker95 (C) 2018");
+	this->m_helper->SDL_DrawImage(this->m_background, 0, 0);
+	this->m_helper->SDL_DrawImage(this->m_logo, 250, 70);
+	this->m_helper->SDL_DrawImage(this->m_playButton, 460, 450);
+	this->m_helper->SDL_DrawTextWithFont(this->m_font, 525, 670, BLACK, "Manurocker95 (C) 2018");
 }
 
 void TitleScreen::Update()
 {
-	if (m_changeScene)
+	if (this->m_changeScene)
 		NextScene();
 }
 
@@ -48,13 +52,13 @@ void TitleScreen::CheckInputs(u64 kDown, u64 kHeld)
 		if (touch.px >= 460 && touch.px < 820 && touch.py >= 450 && touch.py <= 576)//360x126
 		{
 			// We touched play ;)
-			m_changeScene = true;
+			this->m_changeScene = true;
 			return;
 		}
 	}
 
 	if (kDown & KEY_A)
-		m_changeScene = true;
+		this->m_changeScene = true;
 
 	if (kDown & KEY_PLUS)
 	{
@@ -65,12 +69,6 @@ void TitleScreen::CheckInputs(u64 kDown, u64 kHeld)
 // * We go to the next scene = GameScreen
 void TitleScreen::NextScene()
 {
-	/*
-	m_helper->SDL_DestroyTexture(m_background);
-	m_helper->SDL_DestroyTexture(m_logo);
-	m_helper->SDL_DestroyTexture(m_playButton);
-	*/
-
-	SceneManager::Instance()->SetActualScene(SceneManager::GAME);
+	SceneManager::Instance()->LoadScene(SceneManager::GAME);
 }
 

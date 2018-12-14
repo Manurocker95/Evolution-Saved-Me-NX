@@ -1,4 +1,8 @@
 #include "SceneManager.hpp"
+#include "SplashScreen.hpp"
+#include "TitleScreen.hpp"
+#include "GameScreen.hpp"
+#include "LoadingScreen.hpp"
 #include "Colors.h"
 
 SceneManager * SceneManager::instance = NULL;
@@ -31,7 +35,7 @@ void SceneManager::ReadData()
 void SceneManager::SetActualScene(SCENES _scene)
 {
 	// We delete the pointer of the actual scene
-	delete (m_actualScene);
+	delete (this->m_actualScene);
 
 	// We set the new scene
 	switch (_scene)
@@ -47,6 +51,16 @@ void SceneManager::SetActualScene(SCENES _scene)
 		break;
 	}
 
+	this->m_actualScene->Start(m_helper);
+}
+
+void SceneManager::LoadScene(SCENES _scene)
+{
+	// We delete the pointer of the actual scene
+	if (this->m_actualScene != NULL)
+		delete (this->m_actualScene);
+
+	this->m_actualScene = new LoadingScreen(_scene);
 	this->m_actualScene->Start(m_helper);
 }
 

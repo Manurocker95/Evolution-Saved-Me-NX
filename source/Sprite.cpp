@@ -5,33 +5,18 @@
 void Sprite::Draw(SDL_Helper * _helper)
 {
 	if (this->m_multipleFrames)
-		_helper->SDL_DrawImageRect(this->m_sprite, m_x, m_y, m_currentFrame * m_sizePerFrameX, 0, m_sizePerFrameX, m_sizePerFrameY);
+		_helper->SDL_DrawImageRect(this->m_sprite, this->m_x, this->m_y, this->m_currentFrame * this->m_sizePerFrameX, 0, this->m_sizePerFrameX, this->m_sizePerFrameY);
 	else
-		_helper->SDL_DrawImage(this->m_sprite, m_x, m_y);
+		_helper->SDL_DrawImage(this->m_sprite, this->m_x, this->m_y);
 }
 
 void Sprite::Update()
 {
-	if (m_multipleFrames)
+	if (this->m_multipleFrames)
 	{
 		Uint32 ticks = SDL_GetTicks();
-		this->m_currentFrame = (ticks / 100) % this->m_numFrames;
+		this->m_currentFrame = (ticks / 200) % this->m_numFrames;
 	}
-
-	/*
-	this->m_secondaryCounter++;
-
-	if (this->m_secondaryCounter > FRAME_COUNTER_MONKEY)
-	{
-		this->m_currentFrame++;
-		this->m_secondaryCounter = 0;
-	}
-
-	if (this->m_currentFrame >= this->m_numFrames)
-	{
-		this->m_currentFrame = 0;
-	}
-	*/
 }
 
 void Sprite::MoveToCoord(int _x, int _y)
@@ -42,13 +27,13 @@ void Sprite::MoveToCoord(int _x, int _y)
 
 void Sprite::MoveX(int _value)
 {
-	if ((_value > 0 && m_x + _value <= SWITCH_SCREEN_WIDTH - CELL_SIZE - CELL_SIZE) || (_value < 0 && m_x + _value >= 0 + CELL_SIZE))
+	if ((_value > 0 && m_x + _value <= SWITCH_SCREEN_WIDTH - (CELL_SIZE*2)) || (_value < 0 && m_x + _value >= 0 + (CELL_SIZE * 2)))
 		this->m_x += _value;
 }
 
 void Sprite::MoveY(int _value)
 {
-	if ((_value > 0 && m_y + _value <= SWITCH_SCREEN_HEIGHT - CELL_SIZE - CELL_SIZE) || (_value < 0 && m_y + _value >= 0 + CELL_SIZE))
+	if ((_value > 0 && this->m_y + _value <= SWITCH_SCREEN_HEIGHT - (CELL_SIZE * 2)) || (_value < 0 && this->m_y + _value >= 0 + (CELL_SIZE)))
 		this->m_y += _value;
 }
 
@@ -59,7 +44,7 @@ SDL_Texture * Sprite::GetSprite()
 
 void Sprite::SetSprite(SDL_Texture * _sprite)
 {
-	m_sprite = _sprite;
+	this->m_sprite = _sprite;
 }
 
 
@@ -85,7 +70,8 @@ int Sprite::GetY()
 
 void Sprite::End(SDL_Helper * _helper)
 {
-	//_helper->SDL_DestroyTexture(this->m_sprite);
+	if (this->m_sprite != NULL)
+		_helper->SDL_DestroyTexture(this->m_sprite);
 }
 
 

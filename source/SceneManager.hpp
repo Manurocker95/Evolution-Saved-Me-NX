@@ -4,20 +4,17 @@
 
 #include <fstream>
 #include <sstream>
-
-#include "SplashScreen.hpp"
-#include "TitleScreen.hpp"
-#include "GameScreen.hpp"
+#include "Scene.hpp"
 
 class SceneManager
 {
 public:
 
-	enum SCENES { SPLASH, TITLE, GAME };	// Scenes: Splashcreen, TitleScreen, Gamescreen
+	enum SCENES { SPLASH, TITLE, GAME, LOADING, SCORE };	// Scenes: Splashcreen, TitleScreen, Gamescreen, Loadingscreen
 
 public:
 	static SceneManager * Instance();		// Property to get the singleton instance
-
+	void LoadScene(SCENES _scene);
 	void SetActualScene(SCENES _scene);		// Method to set a new scene (E.G: SplashScreen -> GameScreen)
 	void Start(SDL_Helper * helper);		// Method for initialization
 	void Update();							// Method called every frame. It calls to scene Draw, Update and CheckInput functions

@@ -14,6 +14,7 @@ class GameScreen : public Scene
 
 private:
 	SDL_Texture * m_background;
+	SDL_Texture * m_deadBackground;
 	SDL_Texture * m_pauseTexture;
 	SDL_Texture * m_bananaTexture;
 	SDL_Texture * m_fireTexture;
@@ -31,6 +32,7 @@ private:
 	int m_fireTimer;
 	int m_invincibleTimer;
 	int m_dyingTimer;
+	int m_deadTimer;
 	int m_timeToSpawn;
 
 	int m_rayCounter;
@@ -51,6 +53,7 @@ public:
 	void UpdateCollisions();
 	void AddScore(int _value);
 	void EndGame();
+	void BackToMenu();
 };
 
 #endif

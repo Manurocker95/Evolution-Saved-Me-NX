@@ -31,7 +31,7 @@ private:
 public:
 	Monkey();	// Basic Constructor
 	Monkey(int _x, int _y, SDL_Helper * _helper, bool _multipleFrames, int _numFrames, int _sizePerFrameX, int _sizePerFrameY);
-	~Monkey() { };	// Destructor
+	~Monkey();	// Destructor
 
 public:
 

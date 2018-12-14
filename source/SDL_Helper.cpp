@@ -25,11 +25,11 @@ bool SDL_Helper::SDL_IsInitialized(void)
 
 FC_Font * SDL_Helper::GetFont(int size) 
 {
-	if (size == 20)
+	if (size <= 20)
 		return this->Roboto_small;
-	else if (size == 25)
+	else if (size <= 25)
 		return this->Roboto;
-	else if (size == 30)
+	else if (size <= 30)
 		return this->Roboto_large;
 	else
 		return this->Roboto_OSK;
@@ -72,6 +72,24 @@ Result SDL_Helper::SDL_HelperInit(void)
 	this->m_initialized = true;
 	
 	return 0;
+}
+
+void SDL_Helper::SDL_LoadCustomFont(FC_Font ** font, char * fontPath, int size, SDL_Color color)
+{
+	*font = FC_CreateFont();
+	TTF_Font * ttf_font = TTF_OpenFont(fontPath, size);
+	FC_LoadFontFromTTF(*font, this->m_renderer, ttf_font, ttf_font, color);
+	TTF_CloseFont(ttf_font);
+}
+
+void SDL_Helper::SDL_DrawTextWithFont(FC_Font * font, int x, int y, SDL_Color colour, const char *text)
+{
+	FC_DrawColor(font, this->m_renderer, x, y, colour, text);
+}
+
+void SDL_Helper::SDL_DestroyFont(FC_Font * font)
+{
+	FC_FreeFont(font);
 }
 
 void SDL_Helper::SDL_Exit(void) 

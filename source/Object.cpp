@@ -52,7 +52,6 @@ void Object::Update()
 void Object::End(SDL_Helper * _helper)
 {
 	Sprite::End(_helper);
-	delete(this);
 }
 
 Object::OBJECT_TYPE Object::GetType()
