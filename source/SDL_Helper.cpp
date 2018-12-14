@@ -51,6 +51,10 @@ Result SDL_Helper::SDL_HelperInit(void)
 
 	Mix_Init(MIX_INIT_FLAC | MIX_INIT_MOD | MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_MID);
 
+	//Initialize SDL_mixer 
+	if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+		return -1;
+
 	if (R_FAILED(ret = plGetSharedFontByType(&this->fontData, PlSharedFontType_Standard)))
 		return ret;
 
@@ -101,7 +105,7 @@ void SDL_Helper::SDL_Exit(void)
 	TTF_Quit();
 
 	Mix_Quit();
-
+	Mix_CloseAudio();
 	IMG_Quit();
 
 	SDL_DestroyRenderer(this->m_renderer);
@@ -225,4 +229,57 @@ void SDL_Helper::SDL_DrawBG(SDL_Color clearColor, SDL_Color colour)
 {
 	SDL_ClearScreen(clearColor);
 	SDL_DrawRect(0, 0, SWITCH_SCREEN_WIDTH, SWITCH_SCREEN_HEIGHT, colour);
+}
+
+void SDL_Helper::SDL_LoadMusicAudio(Mix_Music ** sound, char * path)
+{
+	*sound = Mix_LoadMUS(path);
+}
+
+void SDL_Helper::SDL_PlayMusicAudio(Mix_Music * audio, int channel)
+{
+	//function to play a sound 
+	if (Mix_PlayMusic(audio, true) == -1)
+	{
+		return;
+	}
+}
+
+void SDL_Helper::SDL_DestroyMusicAudio(Mix_Music * audio)
+{
+	Mix_FreeMusic(audio);
+}
+
+void SDL_Helper::SDL_LoadSound(Mix_Chunk ** sound, char * path)
+{
+	*sound = Mix_LoadWAV(path);
+}
+
+void SDL_Helper::SDL_PlaySound(Mix_Chunk * sound, int channel)
+{ 
+	//function to play a sound 
+	if (Mix_PlayChannel(channel, sound, 0) == -1)
+	{
+		return;
+	}
+}
+
+void SDL_Helper::SDL_DestroySound(Mix_Chunk * sound)
+{
+	Mix_FreeChunk(sound);
+}
+
+void SDL_Helper::SDL_PauseMusic()
+{
+	Mix_PauseMusic();
+}
+
+void SDL_Helper::SDL_ResumeMusic()
+{
+	Mix_ResumeMusic();
+}
+
+void SDL_Helper::SDL_SetMusicVolume(float volume)
+{
+	Mix_VolumeMusic(volume);
 }

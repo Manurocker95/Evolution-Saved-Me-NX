@@ -19,6 +19,14 @@ private:
 	SDL_Texture * m_bananaTexture;
 	SDL_Texture * m_fireTexture;
 
+	Mix_Music * m_gameBGM;
+	Mix_Music * m_poweredBGM;
+
+	Mix_Chunk * m_bananaSFX;
+	Mix_Chunk * m_wowSFX;
+	Mix_Chunk * m_hitSFX;
+	Mix_Chunk * m_laserSFX;
+
 	Monkey * m_player;
 	Object * m_bananas[MAX_BANANAS];
 	Object * m_fire;

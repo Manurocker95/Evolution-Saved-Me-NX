@@ -24,6 +24,7 @@ public:
 	SDL_Window *SDL_GetMainWindow(void);
 	Result SDL_HelperInit(void);
 	FC_Font * GetFont(int size);
+	bool SDL_IsInitialized(void);
 	void SDL_Exit(void);
 	void SDL_ClearScreen(SDL_Color colour);
 	void SDL_DrawRect(int x, int y, int w, int h, SDL_Color colour);
@@ -45,6 +46,14 @@ public:
 	void SDL_DestroyTexture(SDL_Texture * texture);
 	void SDL_DestroyFont(FC_Font * font);
 	void SDL_DrawBG(SDL_Color clearColor, SDL_Color colour);
-	bool SDL_IsInitialized(void);
+	void SDL_PlayMusicAudio(Mix_Music * audio, int channel = -1);
+	void SDL_LoadMusicAudio(Mix_Music ** audio, char * path);
+	void SDL_DestroyMusicAudio(Mix_Music * audio);
+	void SDL_LoadSound(Mix_Chunk ** sound, char * path);
+	void SDL_PlaySound(Mix_Chunk * sound, int channel);
+	void SDL_DestroySound(Mix_Chunk * sound);
+	void SDL_PauseMusic();
+	void SDL_ResumeMusic();
+	void SDL_SetMusicVolume(float volume);
 };
 #endif

@@ -27,13 +27,13 @@ void Sprite::MoveToCoord(int _x, int _y)
 
 void Sprite::MoveX(int _value)
 {
-	if ((_value > 0 && m_x + _value <= SWITCH_SCREEN_WIDTH - (CELL_SIZE*2)) || (_value < 0 && m_x + _value >= 0 + (CELL_SIZE * 2)))
+	if ((_value > 0 && m_x + _value <= SWITCH_SCREEN_WIDTH - (CELL_SIZE)) || (_value < 0 && m_x + _value >= 0 + (CELL_SIZE)))
 		this->m_x += _value;
 }
 
 void Sprite::MoveY(int _value)
 {
-	if ((_value > 0 && this->m_y + _value <= SWITCH_SCREEN_HEIGHT - (CELL_SIZE * 2)) || (_value < 0 && this->m_y + _value >= 0 + (CELL_SIZE)))
+	if ((_value > 0 && this->m_y + _value <= SWITCH_SCREEN_HEIGHT - (CELL_SIZE)) || (_value < 0 && this->m_y + _value >= 0 + (CELL_SIZE)))
 		this->m_y += _value;
 }
 

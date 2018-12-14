@@ -26,6 +26,7 @@ void LoadingScreen::Start(SDL_Helper * helper)
 	this->m_helper = helper;
 	this->m_helper->SDL_LoadImage(&this->m_loadingBG, IMG_BG_LOADING);
 	this->m_helper->SDL_LoadCustomFont(&this->m_font, FONT_NORMAL, 15, BLACK);
+	this->m_helper->SDL_PauseMusic();
 }
 
 void LoadingScreen::Draw()
@@ -69,6 +70,7 @@ void LoadingScreen::CheckInputs(u64 kDown, u64 kHeld)
 // * We go to the next scene = GameScreen
 void LoadingScreen::NextScene()
 {
+	m_helper->SDL_SetMusicVolume(MIX_MAX_VOLUME);
 	SceneManager::Instance()->SetActualScene(this->m_nextScene);
 }
 

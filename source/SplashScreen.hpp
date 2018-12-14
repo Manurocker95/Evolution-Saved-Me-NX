@@ -24,10 +24,25 @@ Copyright (C) 2017 Manuel Rodríguez Matesanz
 
 class SplashScreen : public Scene
 {
-
 public:
 
-	enum SPLASH_STATE { OPENING, STAY, ENDING };
+	enum SPLASH_STATE 
+	{ 
+		OPENING, 
+		STAY, 
+		ENDING 
+	};
+
+private:
+
+	int m_splashOpacity, m_scTimer;
+	bool m_sfxSplash;
+
+	SDL_Texture * m_splash;
+	Mix_Chunk * m_SFX;
+	SPLASH_STATE m_splashOpeningState;
+
+public:
 
 	SplashScreen();						// Constructor
 	~SplashScreen();
@@ -37,15 +52,6 @@ public:
 	void CheckInputs(u64 kDown, u64 kHeld) override;
 	void Update() override;
 	void NextScene() override;
-private:
-
-	int m_splashOpacity, m_scTimer;
-	bool m_sfxSplash;
-	
-private:
-	SDL_Texture * m_splash;
-	//sound * m_SFX;
-	SPLASH_STATE m_splashOpeningState;
 };
 
 #endif

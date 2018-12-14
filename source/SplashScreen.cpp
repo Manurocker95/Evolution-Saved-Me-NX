@@ -34,8 +34,7 @@ SplashScreen::SplashScreen() : Scene()
 // * Destructor
 SplashScreen::~SplashScreen()
 {
-	//m_SFX->stop();
-	//delete m_SFX;
+	m_helper->SDL_DestroySound(m_SFX);
 	m_helper->SDL_DestroyTexture(m_splash);
 }
 
@@ -44,8 +43,7 @@ void SplashScreen::Start(SDL_Helper * helper)
 {
 	this->m_helper = helper;
 	this->m_helper->SDL_LoadImage(&this->m_splash, IMG_SPLASHSCREEN);
-
-	//m_SFX = new sound(SND_SFX_SPLASH, 2, false);
+	this->m_helper->SDL_LoadSound(&this->m_SFX, SND_SFX_SPLASH);
 }
 
 // * Draw the images every frame
@@ -71,7 +69,7 @@ void SplashScreen::Update()
 			if (!this->m_sfxSplash)
 			{
 				this->m_sfxSplash = true;
-				//m_SFX->play();
+				this->m_helper->SDL_PlaySound(m_SFX, 2);
 			}
 		}
 

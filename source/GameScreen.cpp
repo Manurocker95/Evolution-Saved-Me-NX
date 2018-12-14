@@ -51,6 +51,13 @@ GameScreen::~GameScreen()
 	
 	this->m_fire->End(this->m_helper);
 	delete(m_fire);
+
+	m_helper->SDL_DestroyMusicAudio(m_gameBGM);
+	m_helper->SDL_DestroyMusicAudio(m_poweredBGM);
+	m_helper->SDL_DestroySound(m_bananaSFX);
+	m_helper->SDL_DestroySound(m_wowSFX);
+	m_helper->SDL_DestroySound(m_hitSFX);
+	m_helper->SDL_DestroySound(m_laserSFX);
 }
 
 void GameScreen::Start(SDL_Helper * helper)
@@ -75,9 +82,23 @@ void GameScreen::Start(SDL_Helper * helper)
 
 	for (int i = 0; i < MAX_RAYS; i++)
 	{
-		m_rays[i] = new Ray();
-		m_rays[i]->InitialPos();
+		this->m_rays[i] = new Ray();
+		this->m_rays[i]->InitialPos();
 	}
+
+	// BGM
+	this->m_helper->SDL_LoadMusicAudio(&this->m_gameBGM, SND_BGM_GAME);
+	this->m_helper->SDL_LoadMusicAudio(&this->m_poweredBGM, SND_BGM_INVINCIBLE);
+
+	// SFX
+	this->m_helper->SDL_LoadSound(&this->m_bananaSFX, SND_SFX_BANANA);
+	this->m_helper->SDL_LoadSound(&this->m_wowSFX, SND_SFX_WOW);
+	this->m_helper->SDL_LoadSound(&this->m_hitSFX, SND_SFX_LASERHIT);
+	this->m_helper->SDL_LoadSound(&this->m_laserSFX, SND_SFX_LASER);
+
+	//Play music :D
+	this->m_helper->SDL_PlayMusicAudio(this->m_gameBGM);
+	this->m_helper->SDL_ResumeMusic();
 }
 
 void GameScreen::EndGame()
@@ -147,8 +168,10 @@ void GameScreen::Update()
 
 void GameScreen::AddScore(int _value)
 {
-	m_score += _value;
-	m_scoreStr = "Score: " + std::to_string(this->m_score);
+	this->m_score += _value;
+	this->m_scoreStr = "Score: " + std::to_string(this->m_score);
+	if (m_score % WOW_SND_SCORE == 0)
+		this->m_helper->SDL_PlaySound(this->m_wowSFX, 4);
 }
 
 void GameScreen::UpdateCollisions()
@@ -187,19 +210,23 @@ void GameScreen::UpdateCollisions()
 
 	for (auto & banana : m_bananas)
 	{
-		if (banana->CheckCollision(m_player))
+		if (banana->CheckCollision(this->m_player))
 		{
-			m_activeBananas--;
+			this->m_helper->SDL_PlaySound(m_bananaSFX, 2);
+			this->m_activeBananas--;
 			banana->SetActive(false);
-			AddScore(SCORE_TO_ADD);
+			this->AddScore(SCORE_TO_ADD);
 			banana->MoveToCoord(-CELL_SIZE, -CELL_SIZE);
 		}
 	}
 
-	if (m_player->GetInvincible())
+	if (this->m_player->GetInvincible())
 	{
 		if (m_invincibleTimer >= POWERUPTIME)
 		{
+			
+			m_helper->SDL_PlayMusicAudio(m_gameBGM);
+
 			m_fireTimer = 0;
 			m_invincibleTimer = 0;
 			m_player->SetInvincible(false);
@@ -232,6 +259,7 @@ void GameScreen::UpdateCollisions()
 		{
 			if (m_deadTimer >= DEADTIME)
 			{
+				m_helper->SDL_SetMusicVolume(MIX_MAX_VOLUME*0.25f);
 				m_ended = true;
 				return;
 			}
@@ -267,6 +295,7 @@ void GameScreen::UpdateCollisions()
 		{
 			if (m_fire->CheckCollision(m_player))
 			{
+				m_helper->SDL_PlayMusicAudio(m_poweredBGM);
 				m_fire->MoveToCoord(-CELL_SIZE, -CELL_SIZE);
 				m_fireTimer = 0;
 				m_invincibleTimer = 0;
@@ -284,6 +313,8 @@ void GameScreen::UpdateCollisions()
 
 	if (m_deltaRay >= m_timeToSpawn)
 	{
+		
+		this->m_helper->SDL_PlaySound(m_laserSFX, 3);
 		m_rayCounter = rand() % (MAX_RAYS-1);
 		for (int i = 0; i < m_rayCounter; i++)
 		{
@@ -298,6 +329,7 @@ void GameScreen::UpdateCollisions()
 		{
 			if (m_rays[i]->CheckCollision(m_player))
 			{
+				m_helper->SDL_PlaySound(m_hitSFX, 5);
 				m_player->ChangeState(Monkey::MONKEY_STATES::DYING);
 				m_player->SetFrameSize(MONKEY_SIZE_PER_FRAME, true);
 				m_player->SetNumFrames(8);
@@ -322,6 +354,7 @@ void GameScreen::CheckInputs(u64 kDown, u64 kHeld)
 
 	if (kDown & KEY_PLUS)
 	{
+		m_helper->SDL_SetMusicVolume(MIX_MAX_VOLUME*0.25f);
 		m_ended = true;
 	}
 		

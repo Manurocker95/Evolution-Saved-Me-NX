@@ -11,6 +11,8 @@ private:
 	SDL_Texture * m_logo;
 	SDL_Texture * m_playButton;
 	FC_Font * m_font;
+	Mix_Music * m_music;
+	Mix_Chunk * m_buttonTapSFX;
 
 public:
 
